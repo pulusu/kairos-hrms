@@ -1,0 +1,288 @@
+{%extends 'base.html'%}
+{% load humanize %}
+{%load mathfilters %}
+{%block body%}
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading">E-COMMERCE CART</h1>
+     </div>
+</section>
+{%if user.is_authenticated %}
+{%if cart_objs.count == 0%}
+<h2>cart is empty</h2>
+{%else%}
+<form action="{%url 'pay'%}" method="POST">
+    {% csrf_token %}
+<div class="container mb-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col"> </th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Available</th>
+                            <th scope="col" class="text-center">Quantity</th>
+                            <th scope="col" class="text-right">Price</th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cart_obj in cart_objs %}
+                        <tr>
+                            <td><img src="{{cart_obj.product.img.url}}"/ width=40 height=40></td>
+                            <td>{{cart_obj.product.title}}</td>
+                            <td>In stock</td>
+                            <td>
+                                <!-- <input class="form-control" type="text" value="{{cart_obj.quantity}}"/ size="1"> -->
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <button type="button" class="quantity-minus btn btn-danger btn-number"  data-type="{{cart_obj.id}}" data-field="">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                                <input type="text" class="form-control" size='1'  id="quantity{{cart_obj.id}}" name="quantity" min="1" max="100" value="{{cart_obj.quantity}}" disabled>
+                                <div class="input-group-append">
+                                    <button type="button" class="quantity-plus btn btn-success btn-number" data-type="{{cart_obj.id}}" data-field="">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            </td>
+                            <td class="text-right">₹ {{cart_obj.TotalPrice|intcomma}}</td>
+                            <!-- <td class="text-right">₹ {{cart_obj.TotalPrice}}</td> -->
+                            <td class="text-right"><button class="btn btn-sm btn-danger delete" value="{{cart_obj.id}}"><i class="fa fa-trash"></i> </button> </td>
+                        </tr>
+                        {%endfor%}
+                       <!--  <tr>
+                            <td><img src="https://dummyimage.com/50x50/55595c/fff" /> </td>
+                            <td>Product Name Toto</td>
+                            <td>In stock</td>
+                            <td><input class="form-control" type="text" value="1" /></td>
+                            <td class="text-right">33,90 €</td>
+                            <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
+                        </tr>
+                        <tr>
+                            <td><img src="https://dummyimage.com/50x50/55595c/fff" /> </td>
+                            <td>Product Name Titi</td>
+                            <td>In stock</td>
+                            <td><input class="form-control" type="text" value="1" /></td>
+                            <td class="text-right">70,00 €</td>
+                            <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
+                        </tr> -->
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Sub-Total</td>
+                            <td class="text-right">₹ {{total|intcomma}}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Shipping</td>
+                            <td class="text-right">₹0</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><strong>Total</strong></td>
+                            <td class="text-right" ><strong>₹{{total|intcomma}}</strong></td>
+                            <input type="hidden" name="amount" value="{{total}}">
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col mb-2">
+            <div class="row">
+                <div class="col-sm-12  col-md-6">
+                    <a type="submit" href="{%url 'category' %}" class="btn btn-block btn-light">Continue Shopping</a>
+                </div>
+                <div class="col-sm-12 col-md-6 text-right">
+                    <input type="submit" class="btn btn-lg btn-block btn-success text-uppercase" value="Checkout" >
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+{%endif%}
+{%else%}
+<!-- <h2>pleasse login</h2>
+<a class="btn btn-success btn-sm ml-3 my_btn" >Login</a> -->
+<form action="{%url 'pay'%}" method="POST">
+    {% csrf_token %}
+<div class="container mb-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col"> </th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Available</th>
+                            <th scope="col" class="text-center">Quantity</th>
+                            <th scope="col" class="text-right">Price</th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cart_obj in cart_items %}
+                        <tr>
+                            <td><img src="{{cart_obj.product.img.url}}"/ width=40 height=40></td>
+                            <td>{{cart_obj.product.title}}</td>
+                            <td>In stock</td>
+                            <td>
+                                <!-- <input class="form-control" type="text" value="{{cart_obj.quantity}}"/ size="1"> -->
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <button type="button" class="quantity-minus btn btn-danger btn-number"  data-type="{{cart_obj.product.id}}">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                                <input type="text" class="form-control" size='1'  id="quantity{{cart_obj.product.id}}" name="quantity" min="1" max="100" value="{{cart_obj.quantity}}" disabled>
+                                <div class="input-group-append">
+                                    <button type="button" class="quantity-plus btn btn-success btn-number" data-type="{{cart_obj.product.id}}">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            </td>
+                            <td class="text-right">₹ {{cart_obj.product.discount_price|mul:cart_obj.quantity|intcomma}}</td>
+                            <!-- <td class="text-right">₹ {{cart_obj.TotalPrice}}</td> -->
+                            <td class="text-right"><button class="btn btn-sm btn-danger delete" value="{{cart_obj.id}}"><i class="fa fa-trash"></i> </button> </td>
+                        </tr>
+                        {%endfor%}
+                       <!--  <tr>
+                            <td><img src="https://dummyimage.com/50x50/55595c/fff" /> </td>
+                            <td>Product Name Toto</td>
+                            <td>In stock</td>
+                            <td><input class="form-control" type="text" value="1" /></td>
+                            <td class="text-right">33,90 €</td>
+                            <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
+                        </tr>
+                        <tr>
+                            <td><img src="https://dummyimage.com/50x50/55595c/fff" /> </td>
+                            <td>Product Name Titi</td>
+                            <td>In stock</td>
+                            <td><input class="form-control" type="text" value="1" /></td>
+                            <td class="text-right">70,00 €</td>
+                            <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
+                        </tr> -->
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Sub-Total</td>
+                            <td class="text-right">₹ {{total_cost|intcomma}}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Shipping</td>
+                            <td class="text-right">₹0</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><strong>Total</strong></td>
+                            <td class="text-right" ><strong>₹{{total_cost|intcomma}}</strong></td>
+                            <input type="hidden" name="amount" value="{{total}}">
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col mb-2">
+            <div class="row">
+                <div class="col-sm-12  col-md-6">
+                    <a type="submit" href="{%url 'category' %}" class="btn btn-block btn-light">Continue Shopping</a>
+                </div>
+                <div class="col-sm-12 col-md-6 text-right">
+                    <input type="submit" class="btn btn-lg btn-block btn-success text-uppercase" value="Checkout" >
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+{%endif%}
+{%endblock%}
+{%block js%}
+<script type="text/javascript">
+     $(document).ready(function(){
+        var quantity = 1;
+
+        $('.quantity-plus').click(function(e){
+            e.preventDefault();
+            var id = $(this).data("type")
+            var quantity = parseInt($('#quantity'+id).val());
+            $('#quantity'+id).val(quantity + 1);
+            $.ajax({
+                url: '{%url 'cart'  %}',
+                data: {
+                "quantity" : quantity + 1,
+                "id"       : id
+                },
+               success: function(data) {
+                location.reload();
+               }
+            });
+        });
+
+        $('.quantity-minus').click(function(e){ 
+            e.preventDefault();
+            var id = $(this).data("type")
+            alert(id)
+            var quantity = parseInt($('#quantity'+id).val());
+            if(quantity > 1){
+                $('#quantity'+id).val(quantity - 1);
+            }
+            if (quantity !=1){
+                $.ajax({
+                    url: '{%url 'cart'  %}',
+                    data: {
+                    "quantity" : quantity - 1,
+                    "id"       : id,
+                    },
+                    success: function(data) {
+                    location.reload();
+                    }
+                });
+            }
+        });
+
+        $(".delete").click(function(){
+            var str = $(this).val();
+            $.ajax({
+                    url: '{%url 'cart'  %}',
+                    data: {
+                    "del_id"       : str,
+                    },
+                    success: function(data) {
+                        if (data){
+                        location.reload();
+                        
+                        }
+                    }
+            });
+    });
+
+    });
+</script>
+
+
+{%endblock%}
