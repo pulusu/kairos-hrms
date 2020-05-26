@@ -246,7 +246,6 @@
         $('.quantity-minus').click(function(e){ 
             e.preventDefault();
             var id = $(this).data("type")
-            alert(id)
             var quantity = parseInt($('#quantity'+id).val());
             if(quantity > 1){
                 $('#quantity'+id).val(quantity - 1);

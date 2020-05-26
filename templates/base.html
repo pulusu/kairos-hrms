@@ -253,7 +253,6 @@ function login_function(event) {
     $('a[name="product_id').click(function(){
         var dataId = $(this).attr("data-id");
         var quantity = $('#quantity').val()
-        alert(quantity)
         $.ajax({
              url: '{%url 'add_to_cart'  %}',
               data: {
