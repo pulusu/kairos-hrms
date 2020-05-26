@@ -31,4 +31,4 @@ def cart_contents(request):
             total += int(quantity) * product.discount_price
             product_count += 1
             cart_items.append({'quantity': quantity, 'product': product})
-        return {'cart_items': cart_items, 'total': total, 'product_count': product_count}
+        return {'cart_items': cart_items, 'total_cost': total, 'product_count': product_count}
