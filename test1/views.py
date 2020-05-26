@@ -90,7 +90,7 @@ def product_details(request, slug=None, pk=None):
     return render(request, 'product.html', context)
 
 
-@login_required(login_url='login/')
+@login_required(login_url='/login')
 def initiate_payment(request):
     amount = request.POST.get('amount')
     print(amount)
