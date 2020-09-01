@@ -23,6 +23,6 @@ urlpatterns = [
     path('', include('test1.urls')),
 ]
 
-if not settings.DEBUG:
+if  settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)

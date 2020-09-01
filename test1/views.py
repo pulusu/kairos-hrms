@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Sliders, CATEGORY_CHOICES, Item, Cart, Transaction
 from django.http import HttpResponse
 from django.db.models import Q
-from .paytm import generate_checksum, verify_checksum
+# from .paytm import generate_checksum, verify_checksum
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt

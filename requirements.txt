@@ -6,3 +6,4 @@ psycopg2==2.8.5
 pycryptodome==3.9.7
 pytz==2020.1
 sqlparse==0.3.1
+Crypto
